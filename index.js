@@ -1,43 +1,32 @@
-const http = require('http');  
-const helloWorld = ('./helloWorld')
-const moment = require('moment')
+const express = require('express')  
+const app = express()  
+const port = 3000  
 
+app.get('/', (req, res) => res.send('This is the home'))
+app.get('/about', (req, res) => res.status(200).json({
+    status: 'success',
+    message: 'responses success',
+    description: 'Exercise #2',
+    date: '2023-02-09T07:51:09+08:00',
+    data: []
 
+}))
+app.get('/users', (req, res) => res.status(200).json({
+    id: '1',
+        name: "Leanne Graham",
+        username: "Bret",
+        email: "Sincere@april.biz",
+    address: '2',
+            street: "Kulas Light",
+            suite: "Apt. 556",
+            city: "Gwenborough",
+            zipcode: "92998-3874",
+    geo: '3', 
+            lat: "-37.3159",
+            lng: "81.1496",
+    data: []
 
-const server = http.createServer((req, res) => {
-    
-    // res.write(hello)
-    // res.write(greetings())
-    const url = req.url;
-    if(url === '/'){
-        res.statusCode = 200
-        res.setHeader('Content-Type', 'text/json')
-        res.write(JSON.stringify({
-            status: 'success',
-            message: 'Users',
-            date: moment().format('MMMM Do YYYY, h:mm:ss a')
-        }))
-    }
-    else if(url === '/about'){
-        res.statusCode = 200
-        res.setHeader('Content-Type', 'text/json')
-        res.write(JSON.stringify({
-            status: 'success',
-            message: 'Post',
-            date: moment().format('MMMM Do YYYY, h:mm:ss a')
-        }))
-    } else {
-        res.statusCode = 404
-        res.setHeader('Content-Type', 'text/json')
-        res.write(JSON.stringify({
-            status: 'not found',
-            message: 'Route tidak ditemukan',
-            date: moment().format('MMMM Do YYYY, h:mm:ss a')
-        }))
-    }
-    res.end()
-})
+}))
 
-const hostname = "127.0.0.1"
-const port = 3000
-server.listen(port, hostname, () => console.log(`Server running at http://${hostname}:${port}`))
+app.get('/', (req, res) => res.send('Hello World!')) // <= tambahkan ini  
+app.listen(port, () => console.log(`Server running at http://localhost:${port}`))
