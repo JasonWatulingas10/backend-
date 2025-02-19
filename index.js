@@ -1,52 +1,52 @@
-const express = require('express')  
-const app = express()  
-const port = 3000
-const moment = require('moment')
+const express = require('express');  
+const morgan = require('morgan');  
+const users = require('./users');  
 
-const log = (req, res, next) => {
-    console.log(
-        moment().format("h:mm:ss a") + " " + req.originalUrl + " " + req.ip
-    );
-    next();
-};
+const app = express();  
+const PORT = process.env.PORT || 3000;  
 
-app.use(log);
+// Middlewares  
+app.use(morgan('combined')); // Menggunakan Morgan untuk mencatat log  
+app.use(express.json()); // Untuk parsing JSON  
 
-//middleware untuk error
+// Endpoint untuk mendapatkan semua user  
+app.get('/users', (req, res) => {  
+  res.json(users);  
+});  
 
-const errorHandling = (err, req, res, next) => {
-    res.status(404).json({
-        status: "error",
-        message: "terjadi kesalahan pada server",
-    });
-};
-app.use(errorHandling);
+// Endpoint untuk mendapatkan user berdasarkan nama  
+app.get('/users/:name', (req, res) => {  
+  const userName = req.params.name.toLowerCase();  
+  const user = users.find(u => u.name.toLowerCase() === userName);  
 
-app.get('/', (req, res) => res.send('This is the home'))
-app.get('/about', (req, res) => res.status(200).json({
-    status: 'success',
-    message: 'responses success',
-    description: 'Exercise #2',
-    date: '2023-02-09T07:51:09+08:00',
-    data: []
+  if (user) {  
+    res.json(user);  
+  } else {  
+    res.status(404).json({  
+      status: "error",  
+      message: "resource tidak ditemukan"  
+    });  
+  }  
+});  
 
-}))
-app.get('/users', (req, res) => res.status(200).json({
-    id: '1',
-        name: "Leanne Graham",
-        username: "Bret",
-        email: "Sincere@april.biz",
-    address: '2',
-            street: "Kulas Light",
-            suite: "Apt. 556",
-            city: "Gwenborough",
-            zipcode: "92998-3874",
-    geo: '3', 
-            lat: "-37.3159",
-            lng: "81.1496",
-    data: []
+// Routing 404  
+app.use((req, res, next) => {  
+  res.status(404).json({  
+    status: "error",  
+    message: "resource tidak ditemukan"  
+  });  
+});  
 
-}))
+// Penanganan Error  
+app.use((err, req, res, next) => {  
+  console.error(err.stack); // Mencetak error ke console  
+  res.status(500).json({  
+    status: "error",  
+    message: "terjadi kesalahan pada server"  
+  });  
+});  
 
-app.get('/', (req, res) => res.send('Hello World!')) // <= tambahkan ini  
-app.listen(port, () => console.log(`Server running at http://localhost:${port}`))
+// Menjalankan server  
+app.listen(PORT, () => {  
+  console.log(`Server is running on http://localhost:${PORT}`);  
+});
