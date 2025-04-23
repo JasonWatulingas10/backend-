@@ -1,16 +1,21 @@
 {
-  "name": "latihan",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "start": ".node",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "helloWorld": "^1.0.0",
-    "moment": "^2.30.1"
-  }
+    "name": "exercise2",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+        "start": "nodemon .",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "description": "",
+    "dependencies": {
+        "cors": "^2.8.5",
+        "errorhandler": "^1.5.1",
+        "express": "^4.21.2",
+        "moment": "^2.30.1",
+        "mongodb": "^6.15.0",
+        "morgan": "^1.10.0",
+        "multer": "^1.4.5-lts.1"
+    }
 }
